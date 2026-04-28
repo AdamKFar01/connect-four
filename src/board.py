@@ -22,11 +22,17 @@ class Board:
 
     def drop_token(self, column, token):                                        # To place token in the lowest empty row for each column
         
+        if column < 0 or column >= self.columns:
+            raise ValueError(f"Invalid column: {column}")
+        if not self.grid[0][column] == ' ':
+            raise ValueError(f"Column {column} is full!")
+
         for i in range (self.rows -1, -1, -1):                                  # Looping from bottom row to top row (inverse loop, from end to beginning)
             
             if self.grid[i][column] == ' ':                                     # If statement to add a token to the lowest column that is empty 
                 self.grid[i][column] = token
                 break
+        return True
 
 
 
@@ -61,18 +67,19 @@ class Board:
         if count_consecutives +1 >= self.win_len: return True  
 
 
+
         # DIAGONAL WIN DETECTION: 
         count_consecutives = 0
-        # Bot right to Top left
+        # Bot right to Top left ^ <--
         r, c = (row - 1, column - 1)
-        while r >= 0 and c >= 0:
+        while r >= 0 and c >= 0:                                                    # While loops are better in this case because we need two conditions across 2D
             if self.grid[r][c] == token:
                 count_consecutives += 1
                 r -= 1
                 c -= 1
             else: break
-    
-        # Top left to Bot right
+
+        # Top left to Bot right v -->
         r, c = (row + 1, column + 1)
         while r < self.rows and c < self.columns:
             if self.grid[r][c] == token:
@@ -84,7 +91,7 @@ class Board:
         
 
         count_consecutives = 0
-        # Bot left to Top right
+        # Bot left to Top right --> ^
         r, c = (row - 1, column + 1)
         while r >= 0 and c < self.columns:
             if self.grid[r][c] == token:
@@ -93,7 +100,7 @@ class Board:
                 c += 1
             else: break
         
-        # Top right to Bot left
+        # Top right to Bot left V -->
         r, c = (row + 1, column - 1)
         while r < self.rows and c >= 0:
             if self.grid[r][c] == token:
@@ -104,6 +111,10 @@ class Board:
         if count_consecutives +1 >= self.win_len: return True  
 
         return False  
+
+
+    def check_draw(self):                       
+        return all(self.grid[0][c] != ' ' for c in range (self.columns))        # If the board is full, return True
 
 # Testing
 
