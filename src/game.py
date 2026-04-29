@@ -1,3 +1,6 @@
+import logging 
+logging.basicConfig(filename = 'game.log', level = logging.INFO, format = '%(asctime)s - %(message)s')
+
 
 class Game:
 
@@ -22,16 +25,26 @@ class Game:
             try: 
                 column = int(input(f"{self.current_player.name}, choose a column: "))
                 row = self.board.drop_token(column, self.current_player.token)
+                
+                # player move logging
+                logging.info(f"{self.current_player.name} dropped a token in row {row} and column {column}")
                 break
             
             # if an errors occurs, print:
             except ValueError as e:
                 print(f"Invalid input: {e}. Please try again.")
 
+                # error logging
+                logging.warning(f"Invalid input: {e} !")
+
 
         # if a player won (called from board.py/check_win()), it outputs the player who won 
         if self.board.check_win(row, column, self.current_player.token):
             print (f"{self.current_player.name} won!")
+
+            # win logging 
+            logging.info(f"{self.current_player.name} won the game !")
+
             print (" ")
             self.board.display()
             print (" ")
@@ -40,6 +53,10 @@ class Game:
         # if it was a draw (called from board.py/check_draw()), it outputs a message announcing the draw
         if self.board.check_draw():
             print (f"It's a draw! ")
+
+            # draw logging 
+            logging.info("This game ended with a draw... Maybe next time! ")
+
             print (" ")
             self.board.display()
             print (" ")
@@ -59,6 +76,9 @@ class Game:
         print (" ")
         self.board.display()
         print (" ")
+
+        # game start logging
+        logging.info(f"The game has started! Good luck! ")
 
         while not self.play_turn():
             
