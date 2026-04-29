@@ -31,8 +31,8 @@ class Board:
             
             if self.grid[i][column] == ' ':                                     # If statement to add a token to the lowest column that is empty 
                 self.grid[i][column] = token
-                break
-        return True
+                return i
+        #return True
 
 
 
