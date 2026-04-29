@@ -16,8 +16,8 @@ if win_len > rows or win_len > columns:
 
 b = Board(rows, columns, win_len)
 
-Player1 = Player("White", "W")
-Player2 = Player("Black", "B")
+Player1 = Player("Red", "R")
+Player2 = Player("Yellow", "Y")
 
 game = Game(b, Player1, Player2)
 
